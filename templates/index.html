@@ -1,0 +1,94 @@
+{{ define "index" }}
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <link rel="stylesheet" href="/static/css/milligram.min.css" />
+    <link rel="stylesheet" href="/static/css/fontawesome.min.css" />
+
+    <style>
+      body {
+        display: flex;
+        flex-direction: row;
+        height: 100vh;
+        max-width: 100%;
+        width: 100vw;
+      }
+
+      .container {
+        max-width: 80vw;
+        padding-top: 1rem;
+      }
+
+      .sidebar {
+        width: 20vw;
+      }
+
+      .sidebar__content {
+        background: whitesmoke;
+        display: flex;
+        flex-direction: column;
+        height: 100vw;
+        left: 0;
+        position: fixed;
+        top: 0;
+        width: 20vw;
+      }
+
+      .sidebar__content div {
+        background: whitesmoke;
+        border-bottom: 5px solid silver;
+        padding: 1rem 1rem 0.5rem;
+      }
+
+      .sidebar__content .active {
+        background: white;
+        border-color: #9b4dca;
+      }
+    </style>
+
+    <title>st-web</title>
+  </head>
+
+  <body>
+    <div class="sidebar">
+      <nav class="sidebar__content">
+        {{ range $folder := .Folders }}
+        <div class="active">
+          <a href="/files/{{ $folder.Id }}">
+            <i class="far fa-hdd"></i>
+            {{ $folder.Label }}
+          </a>
+        </div>
+        {{ end }}
+      </nav>
+    </div>
+
+    <section class="container">
+      <p>
+        <i class="fas fa-home"></i>
+      </p>
+
+      <table>
+        <tbody>
+          {{ range $child := .Children }}
+          <tr>
+            <td>
+              <a href="/files/{{ $child.Path }}">
+                {{ if $child.IsDir }}
+                <i class="far fa-folder"></i>
+                {{ else }}
+                <i class="far fa-file-alt"></i>
+                {{ end }}
+                <!-- -->
+                {{ $child.Name }}
+              </a>
+            </td>
+          </tr>
+          {{ end }}
+        </tbody>
+      </table>
+    </section>
+  </body>
+</html>
+{{ end }}

@@ -1,0 +1,14 @@
+{{ define "sidebar" }}
+<div class="sidebar">
+  <nav class="sidebar__content">
+    {{ range $folder := .Folders }}
+    <div class="">
+      <a href="/files/{{ $folder.Id }}">
+        <i class="far fa-hdd"></i>
+        {{ $folder.Label }}
+      </a>
+    </div>
+    {{ end }}
+  </nav>
+</div>
+{{ end }}

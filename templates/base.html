@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <link rel="stylesheet" href="{% static 'css/fontawesome.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+
+    <title>ST Web</title>
+  </head>
+
+  <body>
+    <div class="topbar">
+      <div></div>
+      <div>
+        <a href="{% url 'logout' %}">
+          Log out
+          <i class="fas fa-sign-out-alt"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <nav class="sidebar__content">
+        {% for folder in folders %}
+        <div class="active sidebar__item">
+          <a href="/files/{{ folder.id }}">
+            <i class="far fa-hdd"></i>
+            {{ folder.label }}
+          </a>
+        </div>
+        {% endfor %}
+      </nav>
+    </div>
+
+    <section class="container">
+      <p class="breadcrumbs">
+        <a href="{{ root_folder }}"><i class="fas fa-home"></i></a>
+        {% if nav %}<i>/</i>{% endif %}
+        <!-- -->
+        {% for item in nav %}
+        <!-- -->
+        {% if forloop.last %}
+        <a href="{{ item.path }}"><b>{{ item.label }}</b></a>
+        {% else %}
+        <a href="{{ item.path }}">{{ item.label }}</a>
+        <i>/</i>
+        {% endif %}
+        <!-- -->
+        {% endfor %}
+      </p>
+
+      <div class="content">
+        {% block content %}
+        <table class="files-table">
+          <tbody>
+            {% for child in children %}
+            <!-- -->
+            <tr class="{% cycle 'alt' '' %}">
+              <td>
+                <a href="/files/{{ child.path }}">
+                  {% if child.is_dir %}
+                  <i class="far fa-folder"></i>
+                  {% else %}
+                  <i class="far fa-file-alt"></i>
+                  {% endif %}
+                  <!-- -->
+                  {{ child.name }}
+                </a>
+              </td>
+
+              <td class="icon-button">
+                <a>
+                  <i class="fas fa-ellipsis-v"></i>
+                </a>
+              </td>
+
+              <td class="icon-button">
+                <a
+                  href="/share/{{ child.path }}?n={{ request.path |urlencode }}"
+                >
+                  <i class="fas fa-share-alt"></i>
+                </a>
+              </td>
+
+              <td class="icon-button">
+                <a href="/raw/{{ child.path }}" target="_blank">
+                  <i class="fas fa-download"></i>
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% endblock content %}
+      </div>
+    </section>
+  </body>
+</html>

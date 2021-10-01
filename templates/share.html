@@ -1,0 +1,73 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <link rel="stylesheet" href="{% static 'css/fontawesome.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+
+    <title>Share | ST Web</title>
+  </head>
+  <body class="share">
+    <div class="share__container">
+      <form method="POST">
+        {% csrf_token %}
+
+        <fieldset>
+          <h4>
+            <i class="far fa-file-alt"></i>
+            {{ filename }}
+          </h4>
+        </fieldset>
+
+        <fieldset>
+          <label for="expiration_date">
+            Expiration
+            <i
+              class="far fa-question-circle"
+              title="Leave blank for no expiration"
+            ></i>
+          </label>
+          <input name="expiration_date" type="date" />
+        </fieldset>
+
+        <fieldset>
+          <label for="visit_limit">
+            Views Limit
+            <i
+              class="far fa-question-circle"
+              title="Set to zero for no view limit"
+            ></i>
+          </label>
+          <input for="visit_limit" min="0" type="number" value="0" />
+        </fieldset>
+
+        <fieldset>
+          <input type="submit" value="Create" />
+        </fieldset>
+      </form>
+
+      <div class="share__separetor"></div>
+
+      <div style="padding: 1rem">
+        <h4>Previously Created</h4>
+        <ul style="padding-top: 1rem">
+          {% for link in links %}
+          <li>
+            <div class="space-between" style="margin-bottom: 0.5rem">
+              <span> {{ link.short_code }} </span>
+              <i class="far fa-copy"></i>
+            </div>
+
+            <div class="space-between very-small">
+              <span>0 Views left</span>
+              <span>Expires XX/XX/XX</span>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>
